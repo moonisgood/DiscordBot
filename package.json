@@ -1,23 +1,17 @@
 {
-  "name": "discordbot",
+  "name": "bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "express": "^4.16.2",
+    "fs": "0.0.1-security",
+    "moment": "^2.19.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^12.4.1"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/moonisgood/DiscordBot.git"
-  },
-  "bugs": {
-    "url": "https://github.com/moonisgood/DiscordBot/issues"
-  },
-  "homepage": "https://github.com/moonisgood/DiscordBot#readme",
-  "description": ""
+  "license": "ISC"
 }
