@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const { prefix, token, db_host, db_user, db_password, db_database } = require('./config.json');
+const { prefix, token, db_host, db_user, db_password, db_database } = require('./config.js');
 const connection = require("./db/dbSet.js");
 
 const client = new Discord.Client();
@@ -76,4 +76,4 @@ client.on('message', message => {
 });
 
 
-client.login(process.env.TOKEN);
+client.login(token);

@@ -1,8 +1,0 @@
-{
-    "prefix": "~",
-    "token": "process.env.TOKEN",
-    "db_host": "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "db_user": "c4pazizrr177u3al",
-    "db_password": "e7h80wp9t17th3nr",
-    "db_database": "jprgcnq4998ioxr2"
-}
