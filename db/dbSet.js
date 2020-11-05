@@ -1,4 +1,4 @@
-const { prefix, token, db_host, db_user, db_password, db_database } = require('../config.json');
+const { prefix, token, db_host, db_user, db_password, db_database } = require('../config.js');
 const mysql = require('mysql');
 
 module.exports = mysql.createConnection({
