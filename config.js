@@ -1,5 +1,5 @@
 module.exports = {
-    prefix: "~",
+    prefix: "`",
     token: process.env.TOKEN,
     db_host: "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     db_user: process.env.DB_USER,
