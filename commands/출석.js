@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const connection = require("../db/dbSet.js");
 const ms = require("parse-ms");
+const dbManager = require("../function/dbManager.js");
 
 module.exports = {
     name: '출석',
@@ -15,7 +16,13 @@ module.exports = {
             if (err) throw err;
 
             if(result.length < 1) {
-                dbManager.UsersCreatedCheck(message, args);
+                connection.query(`INSERT INTO Users (user_id, guild_id, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}' 0, '1004')`);
+    
+                const embedMsg = new Discord.MessageEmbed()
+                .setColor('#ff0000')
+                .addField('시스템', '데이터가 없어 추가합니다. 명령어를 다시 입력해주세요.')
+
+                message.channel.send(embedMsg);
             }
 
             if(result.length === 1)
