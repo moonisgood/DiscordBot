@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const connection = require("../db/dbSet.js");
 const ms = require("parse-ms");
-const dbManager = require("../function/dbManager.js");
 
 module.exports = {
     name: '출석',
