@@ -16,7 +16,7 @@ module.exports = {
             if (err) throw err;
 
             if(result.length < 1) {
-                connection.query(`INSERT INTO Users (user_id, guild_id, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}' 0, '1004')`);
+                connection.query(`INSERT INTO Users (user_id, guild_id, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}' '0', '1004')`);
     
                 const embedMsg = new Discord.MessageEmbed()
                 .setColor('#ff0000')
