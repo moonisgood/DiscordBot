@@ -28,7 +28,7 @@ module.exports = {
                         let nowDate = moment(date).format("YYYY-MM-DD");
                         let lastDailyDate = moment(result[0].daily_check).format("YYYY-MM-DD");
                         
-                        if(moment(lastDailyDate).isAfter(nowDate) || moment(nowDate).isSame(lastDailyDate)) {
+                        if(moment(nowDate).isBefore(lastDailyDate) || moment(nowDate).isSame(lastDailyDate)) {
                             message.channel.send("```" + "이미 출석하셨습니다. 마지막 출석 : " + lastDailyDate + "```");
                         }
                         else if(moment(lastDailyDate).isBefore(nowDate)) {
