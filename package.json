@@ -15,6 +15,7 @@
     "event-target-shim": "^5.0.1",
     "mime-db": "^1.44.0",
     "mime-types": "^2.1.27",
+    "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
     "parse-ms": "^2.1.0",

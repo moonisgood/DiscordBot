@@ -3,6 +3,7 @@ const ms = require("parse-ms");
 const getConnection = require('../db/db.js');
 const game_config = require('../config/game_config.json');
 const { UsersCreateData } = require("../function/dbManager.js");
+const moment = require('moment');
 
 module.exports = {
     name: '출석',
@@ -23,13 +24,14 @@ module.exports = {
 
                     else if(result.length === 1)
                     {
-                        const timeout = 86400000;
-
-                        if(timeout - (Date.now() - result[0].daily_check) > 0) {
-                            let time = ms(timeout - (Date.now() - result[0].daily_check));
-                            message.channel.send(`${time.hours}시간 ${time.minutes}분 ${time.seconds}초 남았ㅇ용`);
-                        } 
-                        else {
+                        let date = new Date();
+                        let nowDate = moment(date).format("YYYY-MM-DD");
+                        let lastDailyDate = moment(result[0].daily_check).format("YYYY-MM-DD");
+                        
+                        if(moment(lastDailyDate).isAfter(nowDate) || moment(nowDate).isSame(lastDailyDate)) {
+                            message.channel.send("```" + "이미 출석하셨습니다. 마지막 출석 : " + lastDailyDate + "```");
+                        }
+                        else if(moment(lastDailyDate).isBefore(nowDate)) {
                             const raiseExp = 40;
         
                             let level = result[0].level;
@@ -97,7 +99,7 @@ module.exports = {
                                     { name: '출석한 횟수', value: `${daily}회 -> ${daily+1}회`, inline: true },
                                 );
                             }
-                            conn.query(`UPDATE Users SET level=${fixLevel}, experience=${fixExp}, max_exp=${nextExp}, money_blue=money_blue+${reward_moneyblue}, daily=daily+1, daily_check='${Date.now()}' WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+                            conn.query(`UPDATE Users SET level=${fixLevel}, experience=${fixExp}, max_exp=${nextExp}, money_blue=money_blue+${reward_moneyblue}, daily=daily+1, daily_check='${nowDate}' WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
                             console.log(`${message.member.id}-${message.guild.id}: 'Users' | user's Data Updated now.`)
 
                             message.channel.send(embedMsg);
