@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 const game_config = require('../config/game_config.json');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 function UsersCreateData(message, conn) {
     let date = new Date();
-    let nowDate = moment().subtract(1, 'day').format("YYYY-MM-DD");
+    let nowDate = moment().tz('Asia/Seoul').subtract(1, 'day').format("YYYY-MM-DD");
 
     conn.query(`INSERT INTO Users (user_id, guild_id, displayname, honor, money_blue, money_orange, level, experience, max_exp, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}', '${message.member.displayName}', 2, 0, 0, 1, 0, 340, 0, '${nowDate}')`);
     console.log(`${message.member.id}-${message.guild.id}: 'Users' | new user's data created now.`)

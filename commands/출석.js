@@ -3,7 +3,7 @@ const ms = require("parse-ms");
 const getConnection = require('../db/db.js');
 const game_config = require('../config/game_config.json');
 const { UsersCreateData } = require("../function/dbManager.js");
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 module.exports = {
     name: '출석',
@@ -24,8 +24,11 @@ module.exports = {
 
                     else if(result.length === 1)
                     {
+                        //require('moment-timezone');
+                        //moment.tz.setDefault("Asia/Seoul");
+
                         let date = new Date();
-                        let nowDate = moment(date).format("YYYY-MM-DD");
+                        let nowDate = moment(date).tz('Asia/Seoul').format("YYYY-MM-DD");
                         let lastDailyDate = moment(result[0].daily_check).format("YYYY-MM-DD");
                         
                         if(moment(nowDate).isBefore(lastDailyDate) || moment(nowDate).isSame(lastDailyDate)) {
