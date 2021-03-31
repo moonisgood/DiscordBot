@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const { prefix, token } = require('./config.js');
-const connection = require("./db/dbSet.js");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -13,11 +12,6 @@ for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
 }
-
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("Mysql Connected successfully");
-})
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

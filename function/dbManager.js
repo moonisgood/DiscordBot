@@ -1,24 +1,23 @@
 const Discord = require("discord.js");
-const connection = require("../db/dbSet.js");
+const game_config = require('../config/game_config.json');
 
-var dbManager = {};
-
-dbManager.UserCreatedCheck = function(message, args) {
-    connection.query(`INSERT INTO Users (user_id, guild_id, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}' 0, '1004')`);
-    embedMsg(message, args);
+function UsersCreateData(message, conn) {
+    conn.query(`INSERT INTO Users (user_id, guild_id, displayname, honor, money_blue, money_orange, level, experience, max_exp, daily, daily_check) VALUES ('${message.member.id}', '${message.guild.id}', '${message.member.displayName}', 2, 0, 0, 1, 0, 340, 0, '0')`);
+    console.log(`${message.member.id}-${message.guild.id}: 'Users' | new user's data created now.`)
 };
 
-dbManager.TiersCreatedCheck = function(message, args) {
-    connection.query(`INSERT INTO Tiers (user_id, guild_id, civilwar_tier, civilwar_points) VALUES ('${message.member.id}', '${message.guild.id}', 0, '0')`);
-    embedMsg(message, args);
-};
-
-var embedMsg = function(message, args) {
-    const embedMsg = new Discord.MessageEmbed()
-        .setColor('#ff0000')
-        .addField('시스템', '데이터가 없어 추가합니다. 명령어를 다시 입력해주세요.')
-
-        message.channel.send(embedMsg);
+function UsersDisplaynameChange(message, conn) {
+    conn.query(`UPDATE Users SET displayname='${message.member.displayName}' WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+    console.log(`${message.member.id}-${message.guild.id}: 'Users' | user's Displayname changed now.`)
 }
 
-module.exports = dbManager;
+function UserDailyCheck(message, result, conn) {
+    
+}
+
+module.exports = {
+    UsersCreateData: UsersCreateData,
+    UsersDisplaynameChange: UsersDisplaynameChange,
+};
+
+//console.log(parseInt(game_config.daily_experience));
