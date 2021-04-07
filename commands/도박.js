@@ -28,13 +28,13 @@ module.exports = {
                             let random = parseInt((Math.random() * (100 - 1 + 1) + 1));
                             let money = 0;
 
-                            if(1 <= random && random <= 40) {
+                            if(1 <= random && random <= 45) {
                                 money += 50;
                                 embedMsg
                                 .setColor('#0099ff')
                                 .addField('성공!', `파랑정수💧50을 얻었습니다.\n보유한 파랑정수: 💧${result[0].money_blue+money}( +50 )`)
                             }
-                            else if(26 <= random && random <= 100) {
+                            else if(46 <= random && random <= 100) {
                                 money -= 50;
                                 embedMsg
                                 .setColor('#ff0000')
