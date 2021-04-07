@@ -32,13 +32,13 @@ module.exports = {
                                 money += 50;
                                 embedMsg
                                 .setColor('#0099ff')
-                                .addField('성공!', `파랑정수💧50을 얻었습니다.\n보유한 파랑정수: 💧${result[0].money_blue+money}( +50 )`)
+                                .addField(`${message.member.displayName} 도박 성공!`, `파랑정수💧50을 얻었습니다.\n보유한 파랑정수: 💧${result[0].money_blue+money}( +50 )`)
                             }
                             else if(46 <= random && random <= 100) {
                                 money -= 50;
                                 embedMsg
                                 .setColor('#ff0000')
-                                .addField('실패!', `파랑정수💧50을 잃었습니다.\n보유한 파랑정수 : 💧${result[0].money_blue+money}( -50 )`)
+                                .addField(`${message.member.displayName} 도박 실패!`, `파랑정수💧50을 잃었습니다.\n보유한 파랑정수 : 💧${result[0].money_blue+money}( -50 )`)
                             }
                             message.channel.send(embedMsg);
                             conn.query(`UPDATE Users SET money_blue=money_blue+${money} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
