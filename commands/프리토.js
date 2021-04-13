@@ -15,7 +15,7 @@ module.exports = {
 
                 if(result.length < 1) {
                     Minigame_PritoCreateData(message, conn); // 새로운 데이터 생성
-                    message.channel.send("```yaml\n[미니게임]프리토 참가 완료.\n명령어: ~프리토 왼 / ~ 프리토 오\n```");
+                    message.channel.send("```yaml\n[미니게임]프리토 참가 완료.\n명령어: ~프리토 왼 / ~프리토 오\n```");
                 }
                 else if(result.length === 1) {
                     const embed = new Discord.MessageEmbed();
