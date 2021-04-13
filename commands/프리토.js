@@ -63,6 +63,9 @@ module.exports = {
                             .setTitle(`오른쪽으로 오르기 실패.. \n현재 층수: ${nowStage}층 --> 1층\n최고 기록: ${bestStage}층`);
                             nowStage = 1;
                         }
+                    }
+                    else {
+                        return message.channel.send("```yaml\n[미니게임]프리토 명령어\n명령어: ~프리토 왼 / ~프리토 오\n```");
                     }   
             
                 conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
