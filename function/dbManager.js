@@ -14,7 +14,7 @@ function UsersDisplaynameChange(message, conn) {
     console.log(`${message.member.id}-${message.guild.id}: 'Users' | user's Displayname changed now.`)
 }
 
-async function Minigame_PritoCreateData(message, conn) {
+function Minigame_PritoCreateData(message, conn) {
     conn.query(`INSERT INTO Minigame_Prito (user_id, guild_id, displayname, nowStage, bestStage) VALUES ('${message.member.id}', '${message.guild.id}', '${message.member.displayName}', 1, 1)`);
     console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | new user's data created now.`)
 }
