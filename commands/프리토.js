@@ -37,11 +37,11 @@ module.exports = {
                             .setTitle(`왼쪽으로 오르기 성공!! \n현재 층수: ${nowStage-1}층 --> ${nowStage}층\n최고 기록: ${bestStage}층`);   
                         }
                         else {
-                            nowStage = 1;
                             embed
                             .setColor('#ff0000')
                             .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                             .setTitle(`왼쪽으로 오르기 실패.. \n현재 층수: ${nowStage}층 --> 1층\n최고 기록: ${bestStage}층`);
+                            nowStage = 1;
                         }
                     }
                     else if (args[0] === '오') {
@@ -57,11 +57,11 @@ module.exports = {
                             .setTitle(`오른쪽으로 오르기 성공!! \n현재 층수: ${nowStage-1}층 --> ${nowStage}층\n최고 기록: ${bestStage}층`);      
                         }
                         else {
-                            nowStage = 1;
                             embed
                             .setColor('#ff0000')
                             .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                             .setTitle(`오른쪽으로 오르기 실패.. \n현재 층수: ${nowStage}층 --> 1층\n최고 기록: ${bestStage}층`);
+                            nowStage = 1;
                         }
                     }   
             
