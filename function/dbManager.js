@@ -19,8 +19,14 @@ function Minigame_PritoCreateData(message, conn) {
     console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | new user's data created now.`)
 }
 
+function Users_UpdateMoney(message, money, conn) {
+    conn.query(`UPDATE Users SET money_blue=money_blue+${money} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+    console.log(`${message.member.id}-${message.guild.id}: 'Users' | user's Data Updated now.`)
+}
+
 module.exports = {
     UsersCreateData: UsersCreateData,
     UsersDisplaynameChange: UsersDisplaynameChange,
     Minigame_PritoCreateData: Minigame_PritoCreateData,
+    Users_UpdateMoney: Users_UpdateMoney,
 };
