@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const ms = require("parse-ms");
 const getConnection = require('../db/db.js');
 const game_config = require('../config/game_config.json');
 const { UsersCreateData } = require("../function/dbManager.js");
@@ -8,13 +7,12 @@ const moment = require('moment-timezone');
 module.exports = {
     name: '출석',
     description: '출석체크를 합니다.',
-    cooldown: 0.1,
+    cooldown: 3,
     execute(message, args) {
         
         getConnection((conn) => {
-            conn.query(
-                `SELECT * FROM Users WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`,
-                (err, result) => {
+            conn.query(`SELECT * FROM Users WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`,(err, result) => {
+                if (err) throw err;
 
                     if(result.length < 1)
                     {

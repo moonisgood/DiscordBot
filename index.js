@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setActivity('League of Legends', { type: 'WATCHING' });
+    client.user.setActivity(`${prefix}명령어`, { type: 'WATCHING' });
 });
 
 client.on('message', message => {

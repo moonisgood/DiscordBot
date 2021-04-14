@@ -5,7 +5,7 @@ const { UsersCreateData,UsersDisplaynameChange } = require("../function/dbManage
 module.exports = {
     name: '내정보',
     description: '내정보를 확인합니다.',
-    cooldown: 0.1,
+    cooldown: 3,
     guildOnly: true,
     execute(message, args) {
         getConnection((conn) => {

@@ -4,8 +4,8 @@ const { UsersCreateData } = require("../function/dbManager.js");
 
 module.exports = {
     name: '도박',
-    description: '정수를 걸고 도박을 합니다.',
-    cooldown: 2,
+    description: '정수 50개로 도박을 합니다.',
+    cooldown: 3,
     execute(message, args) {
         
         getConnection((conn) => {
