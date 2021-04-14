@@ -5,7 +5,7 @@ const { UsersCreateData, Minigame_PritoCreateData, Users_UpdateMoney } = require
 module.exports = {
     name: '프리토',
     description: '미니게임 - 왼쪽 오른쪽을 골라 1층씩 올라갑니다. 최고 기록 갱신시 정수가 지급됩니다.',
-    usage: '[왼/오]',
+    usage: '[왼/오/랭킹]',
     guildOnly: true,
     cooldown: 3,
     execute(message, args) {
