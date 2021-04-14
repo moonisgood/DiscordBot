@@ -5,6 +5,7 @@ const { UsersCreateData } = require("../function/dbManager.js");
 module.exports = {
     name: '도박',
     description: '정수 50개로 도박을 합니다.',
+    guildOnly: true,
     cooldown: 3,
     execute(message, args) {
         

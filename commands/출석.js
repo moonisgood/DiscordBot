@@ -7,6 +7,7 @@ const moment = require('moment-timezone');
 module.exports = {
     name: '출석',
     description: '출석체크를 합니다.',
+    guildOnly: true,
     cooldown: 3,
     execute(message, args) {
         
