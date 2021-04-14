@@ -50,6 +50,10 @@ module.exports = {
                                     .setColor('#0099ff')
                                     .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                                     .setTitle(`왼쪽으로 오르기 성공!! \n현재 층수: ${nowStage-1}층 --> ${nowStage}층\n최고 기록: ${bestStage}층`);   
+
+                                    conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+                                    console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | user's Data Updated now.`)
+                                    message.channel.send(embed);
                                 }
                                 else {
                                     embed
@@ -57,6 +61,10 @@ module.exports = {
                                     .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                                     .setTitle(`왼쪽으로 오르기 실패.. \n현재 층수: ${nowStage}층 --> 1층\n최고 기록: ${bestStage}층`);
                                     nowStage = 1;
+
+                                    conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+                                    console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | user's Data Updated now.`)
+                                    message.channel.send(embed);
                                 }
                             }
                             else if (args[0] === '오') {
@@ -74,6 +82,10 @@ module.exports = {
                                     .setColor('#0099ff')
                                     .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                                     .setTitle(`오른쪽으로 오르기 성공!! \n현재 층수: ${nowStage-1}층 --> ${nowStage}층\n최고 기록: ${bestStage}층`);      
+
+                                    conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+                                    console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | user's Data Updated now.`)
+                                    message.channel.send(embed);
                                 }
                                 else {
                                     embed
@@ -81,15 +93,32 @@ module.exports = {
                                     .setAuthor(`${message.member.displayName}`, message.author.avatarURL())
                                     .setTitle(`오른쪽으로 오르기 실패.. \n현재 층수: ${nowStage}층 --> 1층\n최고 기록: ${bestStage}층`);
                                     nowStage = 1;
+
+                                    conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
+                                    console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | user's Data Updated now.`)
+                                    message.channel.send(embed);
                                 }
+                            }
+                            else if(args[0] === '랭킹') {
+                                conn.query(`SELECT *, ROW_NUMBER() OVER (ORDER BY bestStage DESC) AS RANK FROM Minigame_Prito WHERE guild_id='${message.guild.id}' LIMIT 10`, (rankErr, rankResult) => {
+                                    if (rankErr) throw rankErr;
+
+                                    if(rankResult.length < 1) {
+                                        message.channel.send('```프리토에 참가한 유저가 없어요!```');
+                                    }
+                                    else if(rankResult.length >= 1) {
+                                        let msg = '```md\n# ==============프리토 랭킹==============\n';
+                                        for(let i=0; i<rankResult.length; i++) {
+                                            msg += `${rankResult[i].RANK}. ${rankResult[i].displayname} - ${rankResult[i].bestStage}층\n`;
+                                        }
+                                        msg += '```';
+                                        message.channel.send(`${msg}`);
+                                    }
+                                });
                             }
                             else {
                                 return message.channel.send("```yaml\n[미니게임]프리토 명령어\n명령어: ~프리토 왼 / ~프리토 오\n```");
                             }   
-            
-                            conn.query(`UPDATE Minigame_Prito SET nowStage=${nowStage}, bestStage=${bestStage} WHERE user_id='${message.member.id}' AND guild_id='${message.guild.id}'`);
-                            console.log(`${message.member.id}-${message.guild.id}: 'Minigame_Prito' | user's Data Updated now.`)
-                            message.channel.send(embed);
                         }
                     });
                 }
@@ -97,4 +126,4 @@ module.exports = {
             conn.release();
         });
     }
-};
+};  
