@@ -49,6 +49,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
 {
     let fields = '';
     let fields2 = '';
+    let maxMMR = 5;
 
     for(let idx=0; idx<players.length; idx++)
     {
@@ -71,7 +72,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     wins += 1;
                     totalMatches += 1;
                     points += 25+(3*mmr);
-                    if(mmr<3)
+                    if(mmr<maxMMR)
                         mmr+=1;
                     tier = Math.floor(points/100);
                     if(tier>27)
@@ -196,7 +197,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     wins += 1;
                     totalMatches += 1;
                     points += 25+(3*mmr);
-                    if(mmr<3)
+                    if(mmr<maxMMR)
                         mmr+=1;
                     tier = Math.floor(points/100);
                     if(tier>27)
