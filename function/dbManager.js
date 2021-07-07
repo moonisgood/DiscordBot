@@ -120,7 +120,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
             
                     let player_rank = '';
-                    if(tier < result[0].tier)
+                    if(tier < result[0].tier && tier > 1)
                     {
                         player_rank = `[${rank_name[tier]}:small_red_triangle_down:]`;
                     }
@@ -130,6 +130,8 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     }
                     let player_name = ` ${displayname} `;
                     let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
+                    if((points-calPoints) <= 100)
+                        player_points = `[${points}]`;
                     fields2 += (player_rank + player_name + player_points + '\n');
 
                     if(idx >= 9) // 메세지 출력
@@ -175,7 +177,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
             
                     let player_rank = '';
-                    if(tier < result[0].tier)
+                    if(tier < result[0].tier && tier > 1)
                     {
                         player_rank = `[${rank_name[tier]}:small_red_triangle_down:]`;
                     }
@@ -221,6 +223,8 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     }
                     let player_name = ` ${displayname} `;
                     let player_points = `[${points}:up: +${calPoints}]`;
+                    if((points-calPoints) <= 100)
+                        player_points = `[${points}]`;
                     fields2 += (player_rank + player_name + player_points + '\n');
 
                     if(idx >= 9) // 메세지 출력
