@@ -10,7 +10,7 @@ const rank_image = ['default', 'iron_4','iron_3','iron_2','iron_1','bronze_4','b
 module.exports = {
     name: '내전',
     description: '내전 시스템',
-    usage: '[내정보/검색/계정추가/팀/팀생성/팀지우기/승/패/순위]',
+    usage: '[내정보/검색/계정생성/팀/팀생성/팀지우기/승/패/순위]',
     cooldown: 0.5,
     guildOnly: true,
     execute(message, args) {
@@ -23,7 +23,7 @@ module.exports = {
 
                 const embed = new Discord.MessageEmbed()
                 .setColor('#E91E63')
-                .setTitle(`명령어: ${prefix}내전 내정보/검색/계정추가/팀/팀생성/팀지우기/승/패/순위`);
+                .setTitle(`명령어: ${prefix}내전 내정보/검색/계정생성/팀/팀생성/팀지우기/승/패/순위`);
                 message.channel.send(embed);      
             }
             else if(args[0] === '내정보') // /내전 내정보 - 내정보를 보여줌
