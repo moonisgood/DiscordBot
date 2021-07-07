@@ -65,10 +65,12 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     let totalMatches = result[0].totalMatches;
                     let points = result[0].points;
                     let mmr = result[0].mmr;
+
+                    let calPoints = 25+(3*mmr);
         
                     wins += 1;
                     totalMatches += 1;
-                    points += (25+(3*mmr))
+                    points += 25+(3*mmr);
                     if(mmr<3)
                         mmr+=1;
                     tier = Math.floor(points/100);
@@ -88,7 +90,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                         player_rank = `[${rank_name[tier]}]`;
                     }
                     let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:up:]`;
+                    let player_points = `[${points}:up: +${calPoints}]`;
                     fields += (player_rank + player_name + player_points + '\n');
                 }
                 else // B팀 패배
@@ -99,10 +101,12 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     let totalMatches = result[0].totalMatches;
                     let points = result[0].points;
                     let mmr = result[0].mmr;
+                    
+                    let calPoints = 25-(2*mmr);
             
                     loses += 1;
                     totalMatches += 1;
-                    points -= Math.floor(25-(1.5*mmr));
+                    points -= 25-(2*mmr);
                     if(points < 100) 
                         points = 100;
                     if(mmr>0)
@@ -122,7 +126,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                         player_rank = `[${rank_name[tier]}]`;
                     }
                     let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:small_red_triangle_down:]`;
+                    let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
                     fields2 += (player_rank + player_name + player_points + '\n');
 
                     if(idx >= 9) // 메세지 출력
@@ -151,9 +155,11 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     let points = result[0].points;
                     let mmr = result[0].mmr;
             
+                    let calPoints = 25-(2*mmr);
+                    
                     loses += 1;
                     totalMatches += 1;
-                    points -= Math.floor(25-(1.5*mmr));
+                    points -= 25-(2*mmr);
                     if(points < 100) 
                         points = 100;
                     if(mmr>0)
@@ -173,7 +179,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                         player_rank = `[${rank_name[tier]}]`;
                     }
                     let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:small_red_triangle_down:]`;
+                    let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
                     fields += (player_rank + player_name + player_points + '\n');
                 }
                 else // B팀 승리
@@ -184,10 +190,12 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     let totalMatches = result[0].totalMatches;
                     let points = result[0].points;
                     let mmr = result[0].mmr;
+
+                    let calPoints = 25+(3*mmr);
         
                     wins += 1;
                     totalMatches += 1;
-                    points += (25+(3*mmr))
+                    points += 25+(3*mmr);
                     if(mmr<3)
                         mmr+=1;
                     tier = Math.floor(points/100);
@@ -207,7 +215,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                         player_rank = `[${rank_name[tier]}]`;
                     }
                     let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:up:]`;
+                    let player_points = `[${points}:up: +${calPoints}]`;
                     fields2 += (player_rank + player_name + player_points + '\n');
 
                     if(idx >= 9) // 메세지 출력
