@@ -130,8 +130,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     }
                     let player_name = ` ${displayname} `;
                     let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
-                    if((points-calPoints) <= 100)
-                        player_points = `[${points}]`;
+ 
                     fields2 += (player_rank + player_name + player_points + '\n');
 
                     if(idx >= 9) // 메세지 출력
@@ -187,8 +186,7 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     }
                     let player_name = ` ${displayname} `;
                     let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
-                    if((points-calPoints) <= 100)
-                        player_points = `[${points}]`;
+
                     fields += (player_rank + player_name + player_points + '\n');
                 }
                 else // B팀 승리
