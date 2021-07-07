@@ -113,6 +113,8 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     if(mmr>0)
                         mmr-=1;
                     tier = Math.floor(points/100);
+                    if(tier>27)
+                        tier = 27;
                 
                     conn.query(`UPDATE Users_Rank SET tier=${tier}, loses=${loses}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
                     console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
@@ -166,6 +168,8 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
                     if(mmr>0)
                         mmr-=1;
                     tier = Math.floor(points/100);
+                    if(tier>27)
+                        tier = 27;
                 
                     conn.query(`UPDATE Users_Rank SET tier=${tier}, loses=${loses}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
                     console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
