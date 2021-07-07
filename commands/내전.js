@@ -428,14 +428,14 @@ module.exports = {
                     conn.query(`SELECT * FROM Users_Rank WHERE user_id='${mentionId}' AND guild_id='${message.guild.id}'`, (err, result) => {
                         if (err) throw err;
 
-                        if(result.length < 0)
+                        if(result.length < 1)
                         {
                             const embedMsg = new Discord.MessageEmbed()
                             .setColor('#ff0000')
                             .setTitle('정보가 존재하지 않습니다.');
                             message.channel.send(embedMsg);
                         }
-                        else if(result.length === 1)
+                        else if(result.length >= 1)
                         {
                             let winrate = result[0].wins/(result[0].wins+result[0].loses)*100;
                             if(!winrate)
