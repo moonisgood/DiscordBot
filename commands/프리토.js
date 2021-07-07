@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const getConnection = require('../db/db.js');
-const { UsersCreateData, Minigame_PritoCreateData, Users_UpdateMoney } = require("../function/dbManager.js");
+const { UsersCreateData, MinigamePritoCreateData, UsersUpdateMoney } = require("../function/dbManager.js");
 
 module.exports = {
     name: '프리토',
@@ -24,7 +24,7 @@ module.exports = {
                         if (err) throw err;
                     
                         if(result.length < 1) {
-                            Minigame_PritoCreateData(message, conn); // 새로운 데이터 생성
+                            MinigamePritoCreateData(message, conn); // 새로운 데이터 생성
                             message.channel.send("```yaml\n[미니게임]프리토 참가 완료.\n명령어: ~프리토 왼 / ~프리토 오\n```");
                         }
                         else if(result.length === 1) {
@@ -41,7 +41,7 @@ module.exports = {
                                     if(nowStage > bestStage) {
                                         bonusMoney = nowStage*50;
                                         bestStage = nowStage;
-                                        Users_UpdateMoney(message, bonusMoney, conn);
+                                        UsersUpdateMoney(message, bonusMoney, conn);
                                         embed
                                         .addField('최고 기록 갱신', `파랑정수💧${nowStage*50}개 지급되었습니다.`);  
                                     }
@@ -73,7 +73,7 @@ module.exports = {
                                     if(nowStage > bestStage) {
                                         bonusMoney = nowStage*50;
                                         bestStage = nowStage;
-                                        Users_UpdateMoney(message, bonusMoney, conn);
+                                        UsersUpdateMoney(message, bonusMoney, conn);
                                         embed
                                         .addField('최고 기록 갱신', `파랑정수💧${nowStage*50}개 지급되었습니다.`);  
                                     }
