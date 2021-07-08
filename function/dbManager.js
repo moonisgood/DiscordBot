@@ -47,9 +47,129 @@ function RankTeamUpdateData(message, position, players=[], playersName=[], conn)
 
 function UserRankTeamUpdateData(message, players=[], winloseCheck, conn) 
 {
-    let fields = '';
-    let fields2 = '';
+    let fields = ''; // 이기는 쪽 문자열
+    let fields2 = ''; // 지는 쪽 문자열
     let maxMMR = 5;
+
+    function win(idx, result)
+    {
+        let displayname = result[0].displayname; // 닉네임
+        let tier = result[0].tier; // 티어
+        let wins = result[0].wins; // 승
+        let totalMatches = result[0].totalMatches; // 총전적
+        let points = result[0].points; // 점수
+        let mmr = result[0].mmr; // mmr
+
+        let calPoints = 25+(3*mmr); // 변동 점수 저장
+
+        wins += 1;
+        totalMatches += 1;
+        points += 25+(3*mmr);
+        if(mmr<maxMMR)
+            mmr+=1;
+        tier = Math.floor(points/100);
+        if(tier>27) // 챌린저 이상이면 티어넘버 27로 고정
+            tier = 27;
+
+        conn.query(`UPDATE Users_Rank SET tier=${tier}, wins=${wins}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
+        console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
+
+        // 개개인 정보 표시할 문자열 생성
+        let player_rank = '';
+        if(tier > result[0].tier) // 변동 티어가 전 티어보다 높으면
+            player_rank = `[${rank_name[tier]}:up:]`;
+        else  
+            player_rank = `[${rank_name[tier]}]`;
+
+        let player_name = ` ${displayname} `;
+        let player_points = `[${points}:up: +${calPoints}]`;
+
+        fields += (player_rank + player_name + player_points + '\n');
+        // 개개인 정보 표시할 문자열 생성
+
+        if(idx >= 9) // B팀이 승리할 때 적용
+        {
+            const embedMsg = new Discord.MessageEmbed()
+            .setColor('#ff0000')
+            //.setThumbnail(message.author.avatarURL())
+            .setTitle("######### 내전 :red_square: B팀 승리#########")
+            .addFields(
+                { name: ':blue_square: A팀\u200B', value: `${fields2}`, inline: true },
+                { name: ':red_square: B팀\u200B', value: `${fields}`, inline: true },
+            );
+              
+            message.channel.send(embedMsg);
+        }
+    }
+
+    function lose(idx, result)
+    {
+        let displayname = result[0].displayname; // 닉네임
+        let tier = result[0].tier; // 티어
+        let loses = result[0].loses; // 승
+        let totalMatches = result[0].totalMatches; // 총전적
+        let points = result[0].points; // 점수
+        let mmr = result[0].mmr; // mmr
+        
+        let preVPoints = points; // 변동되기 전 점수 저장
+        let calPoints = 25-(2*mmr); // 변동 점수 저장
+
+        loses += 1;
+        totalMatches += 1;
+        points -= 25-(2*mmr);
+        if(points < 100)  // 아이언4에서 강등 방지
+            points = 100;
+        if(mmr>0)
+            mmr-=1;
+        tier = Math.floor(points/100);
+        if(tier>27)
+            tier = 27;
+    
+        conn.query(`UPDATE Users_Rank SET tier=${tier}, loses=${loses}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
+        console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
+
+        // 개개인 정보 표시할 문자열
+        let player_rank = '';
+        if(tier < result[0].tier && tier > 1)
+            player_rank = `[${rank_name[tier]}:small_red_triangle_down:]`;
+        else 
+            player_rank = `[${rank_name[tier]}]`;
+
+        let player_name = ` ${displayname} `;
+
+        let player_points = '';
+        if(preVPoints === 100)
+        {
+            player_points = `[${points}]`;
+        }
+        else if((preVPoints-calPoints)<100)
+        {
+            calPoints = Math.abs(100 - preVPoints);
+            player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
+        }
+        else
+        {
+            
+            player_points = `[${points}:small_red_triangle_down: -${calPoints}]`; 
+        }
+
+        fields2 += (player_rank + player_name + player_points + '\n');
+        // 개개인 정보 표시할 문자열
+
+        if(idx >= 9) // A팀이 승리할 때 적용
+        {
+            const embedMsg = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            //.setThumbnail(message.author.avatarURL())
+            .setTitle("######### 내전 :blue_square: A팀 승리 #########")
+            .addFields(
+                { name: ':blue_square: A팀\u200B', value: `${fields}`, inline: true },
+                { name: ':red_square: B팀\u200B', value: `${fields2}`, inline: true },
+            );
+              
+            message.channel.send(embedMsg);
+        }
+    }
 
     for(let idx=0; idx<players.length; idx++)
     {
@@ -60,184 +180,22 @@ function UserRankTeamUpdateData(message, players=[], winloseCheck, conn)
             {
                 if(idx < 5) // A팀 승리
                 {
-                    let displayname = result[0].displayname;
-                    let tier = result[0].tier;
-                    let wins = result[0].wins;
-                    let totalMatches = result[0].totalMatches;
-                    let points = result[0].points;
-                    let mmr = result[0].mmr;
-
-                    let calPoints = 25+(3*mmr);
-        
-                    wins += 1;
-                    totalMatches += 1;
-                    points += 25+(3*mmr);
-                    if(mmr<maxMMR)
-                        mmr+=1;
-                    tier = Math.floor(points/100);
-                    if(tier>27)
-                        tier = 27;
-            
-                    conn.query(`UPDATE Users_Rank SET tier=${tier}, wins=${wins}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
-                    console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
-        
-                    let player_rank = '';
-                    if(tier > result[0].tier)
-                    {
-                        player_rank = `[${rank_name[tier]}:up:]`;
-                    }
-                    else 
-                    {
-                        player_rank = `[${rank_name[tier]}]`;
-                    }
-                    let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:up: +${calPoints}]`;
-                    fields += (player_rank + player_name + player_points + '\n');
+                    win(idx, result);
                 }
                 else // B팀 패배
                 {
-                    let displayname = result[0].displayname;
-                    let tier = result[0].tier;
-                    let loses = result[0].loses;
-                    let totalMatches = result[0].totalMatches;
-                    let points = result[0].points;
-                    let mmr = result[0].mmr;
-                    
-                    let calPoints = 25-(2*mmr);
-            
-                    loses += 1;
-                    totalMatches += 1;
-                    points -= 25-(2*mmr);
-                    if(points < 100) 
-                        points = 100;
-                    if(mmr>0)
-                        mmr-=1;
-                    tier = Math.floor(points/100);
-                    if(tier>27)
-                        tier = 27;
-                
-                    conn.query(`UPDATE Users_Rank SET tier=${tier}, loses=${loses}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
-                    console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
-            
-                    let player_rank = '';
-                    if(tier < result[0].tier && tier > 1)
-                    {
-                        player_rank = `[${rank_name[tier]}:small_red_triangle_down:]`;
-                    }
-                    else 
-                    {
-                        player_rank = `[${rank_name[tier]}]`;
-                    }
-                    let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
- 
-                    fields2 += (player_rank + player_name + player_points + '\n');
-
-                    if(idx >= 9) // 메세지 출력
-                    {
-                        const embedMsg = new Discord.MessageEmbed()
-                        .setColor('#0099ff')
-                        //.setThumbnail(message.author.avatarURL())
-                        .setTitle("######### 내전 :blue_square: A팀 승리 #########")
-                        .addFields(
-                            { name: ':blue_square: A팀\u200B', value: `${fields}`, inline: true },
-                            { name: ':red_square: B팀\u200B', value: `${fields2}`, inline: true },
-                        );
-                          
-                        message.channel.send(embedMsg);
-                    }
+                    lose(idx, result);
                 }
             }
             else if(!winloseCheck) // B팀 승
             {
                 if(idx < 5) // A팀 패배
                 {
-                    let displayname = result[0].displayname;
-                    let tier = result[0].tier;
-                    let loses = result[0].loses;
-                    let totalMatches = result[0].totalMatches;
-                    let points = result[0].points;
-                    let mmr = result[0].mmr;
-            
-                    let calPoints = 25-(2*mmr);
-                    
-                    loses += 1;
-                    totalMatches += 1;
-                    points -= 25-(2*mmr);
-                    if(points < 100) 
-                        points = 100;
-                    if(mmr>0)
-                        mmr-=1;
-                    tier = Math.floor(points/100);
-                    if(tier>27)
-                        tier = 27;
-                
-                    conn.query(`UPDATE Users_Rank SET tier=${tier}, loses=${loses}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
-                    console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
-            
-                    let player_rank = '';
-                    if(tier < result[0].tier && tier > 1)
-                    {
-                        player_rank = `[${rank_name[tier]}:small_red_triangle_down:]`;
-                    }
-                    else 
-                    {
-                        player_rank = `[${rank_name[tier]}]`;
-                    }
-                    let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:small_red_triangle_down: -${calPoints}]`;
-
-                    fields += (player_rank + player_name + player_points + '\n');
+                    lose(idx, result);
                 }
                 else // B팀 승리
                 {
-                    let displayname = result[0].displayname;
-                    let tier = result[0].tier;
-                    let wins = result[0].wins;
-                    let totalMatches = result[0].totalMatches;
-                    let points = result[0].points;
-                    let mmr = result[0].mmr;
-
-                    let calPoints = 25+(3*mmr);
-        
-                    wins += 1;
-                    totalMatches += 1;
-                    points += 25+(3*mmr);
-                    if(mmr<maxMMR)
-                        mmr+=1;
-                    tier = Math.floor(points/100);
-                    if(tier>27)
-                        tier = 27;
-            
-                    conn.query(`UPDATE Users_Rank SET tier=${tier}, wins=${wins}, totalMatches=${totalMatches}, points=${points}, mmr=${mmr} WHERE user_id='${players[idx]}' AND guild_id='${message.guild.id}'`);
-                    console.log(`${players[idx]}-${message.guild.id}: 'Users_Rank' | user's data updated now.`)
-        
-                    let player_rank = '';
-                    if(tier > result[0].tier)
-                    {
-                        player_rank = `[${rank_name[tier]}:up:]`;
-                    }
-                    else 
-                    {
-                        player_rank = `[${rank_name[tier]}]`;
-                    }
-                    let player_name = ` ${displayname} `;
-                    let player_points = `[${points}:up: +${calPoints}]`;
-                    fields2 += (player_rank + player_name + player_points + '\n');
-
-                    if(idx >= 9) // 메세지 출력
-                    {
-                        const embedMsg = new Discord.MessageEmbed()
-                        .setColor('#ff0000')
-                        //.setThumbnail(message.author.avatarURL())
-                        .setTitle("######### 내전 :red_square: B팀 승리#########")
-                        .addFields(
-                            { name: ':blue_square: A팀\u200B', value: `${fields}`, inline: true },
-                            { name: ':red_square: B팀\u200B', value: `${fields2}`, inline: true },
-                        );
-                          
-                        message.channel.send(embedMsg);
-                    }
+                    win(idx, result);
                 }
             }
         });
